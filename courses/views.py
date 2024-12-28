@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render 
 from .models import Course, Enrollment, CourseCategory
 
 
@@ -18,6 +19,7 @@ def category_detail(request, category_id):
     )
 
 
+@login_required(login_url="/login")
 def course_detail(request, course_id):
     course = Course.objects.get(id=course_id)
     is_enrolled = Enrollment.objects.filter(
