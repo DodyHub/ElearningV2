@@ -36,13 +36,20 @@
         <div class="col-lg-8">
           <h1 class="mb-4">{{ course.name }}</h1>
           <p class="mb-4">{{ course.description }}</p>
-          <div class="row g-4 mb-4">
-            <div class="col-sm-6">
-              <h6 class="mb-3">Duration</h6>
-              <p class="mb-0">{{ course.duration }} Hrs</p>
+          {% if is_enrolled %}
+            <div class="row g-4 mb-4">
+              <div class="col-sm-6">
+                <h6 class="mb-3">Enrolled at</h6>
+                <span>{{ enrollment.enrolled_at }}</span>
+              </div>
             </div>
-          </div>
-          <a class="btn btn-primary py-2 px-4" href="{% url 'courses:category_detail' course.category.id %}">Enroll Now</a>
+          {% endif %}
+          {% if not is_enrolled %}
+            <form  action="{% url 'courses:course_enroll' course.id %}" method="post">
+              {% csrf_token %}
+              <button class="btn btn-primary py-2 px-4" type="submit">Enroll Now</button>
+            </form>
+          {% endif %}
         </div>
       </div>
       <div class="row g-5 mt-5">
@@ -55,7 +62,9 @@
                   <div class="card-body">
                     <h5 class="card-title">{{ session.title }}</h5>
                     <p class="card-text">{{ session.description }}</p>
-                    <a href="{{ session.video.url }}" target="_blank" class="btn btn-primary">{{ session.name }}</a>
+                    {% if is_enrolled %}
+                      <a href="{{ session.video.url }}" target="_blank" class="btn btn-primary">{{ session.name }}</a>
+                    {% endif %}
                   </div>
                 </div>
               </div>

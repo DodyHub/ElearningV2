@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 
-
 def home(request):
     return render(request, "core/index.html")
 
