@@ -2,9 +2,15 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+from courses.models import Course
+from django.db.models import Count
+
 
 def home(request):
-    return render(request, "core/index.html")
+    top_courses = Course.objects.annotate(
+        enrollment_count=Count("enrollment")
+    ).order_by("-enrollment_count")[:3]
+    return render(request, "core/index.html", context={"top_courses": top_courses})
 
 
 def about(request):
